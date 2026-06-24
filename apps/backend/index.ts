@@ -1,5 +1,7 @@
 import express from "express";
 import { PreInterviewBody } from './types';
+import { ScrapeGithub } from "./scrapers/github";
+
 
 const app= express();
 app.use(express.json());
@@ -21,8 +23,10 @@ app.post("/api/v1/pre-interview/" , async (req:any , res:any)=>{
 
     const githubUsername =  githubUrl.split('/').pop()!;
     
-    console.log(githubUrl)
-    console.log(githubUsername)
+    const githubData = await ScrapeGithub(githubUsername);
+    
+    console.log(githubData);
+
 
     return res.json({
         msg : "data received"

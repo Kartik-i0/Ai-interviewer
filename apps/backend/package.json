@@ -1,0 +1,25 @@
+{
+  "name": "backend",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@types/axios": "^0.14.4",
+    "axois": "^0.0.1-security",
+    "cors": "^2.8.6",
+    "http-proxy-agent": "^9.1.0",
+    "https-proxy-agent": "^9.1.0",
+    "zod": "^4.4.3"
+  },
+    "scripts": {
+    "dev": "bun run --hot index.ts",
+    "start": "bun run indexts",
+    "build": "bun build ./index.ts --outdir ./dist"
+  }
+}

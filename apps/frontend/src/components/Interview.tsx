@@ -80,7 +80,6 @@ export function Interview() {
             const socket = new WebSocket("wss://api.deepgram.com/v1/listen", [
                 "token",
                 //TODO: Lets create ephemereal api keys for the user and not put the prod key on the frontend
-                "",
             ]);
             socketRef.current = socket;
 
@@ -106,15 +105,23 @@ export function Interview() {
             pc.addTrack(ms.getTracks()[0]!);
 
             // SDP handshake with the backend.
-            const offer = await pc.createOffer();
-            await pc.setLocalDescription(offer);
-            const sdpResponse = await fetch(`${BACKEND_URL}/api/v1/session/${interviewId}`, {
+          const offer = await pc.createOffer();
+                await pc.setLocalDescription(offer);
+
+                const sdpResponse = await fetch(`${BACKEND_URL}/api/v1/session/${interviewId}`, {
                 method: "POST",
                 body: offer.sdp,
                 headers: { "Content-Type": "application/sdp" },
+                });
+
+                const answerSdp = await sdpResponse.text();
+                console.log(answerSdp);
+
+                await pc.setRemoteDescription({
+                type: "answer",
+                sdp: answerSdp,
             });
-            const answer = { type: "answer" as const, sdp: await sdpResponse.text() };
-            await pc.setRemoteDescription(answer);
+
 
             if (cancelled) return;
             setStatus("live");
